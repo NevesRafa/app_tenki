@@ -9,5 +9,6 @@ data class WeatherData(
     val id: Int = 0,
     val temperature: Int,
     val weekday: String,
-    val state: String
+    val state: String,
+    val localeName: String
 )
