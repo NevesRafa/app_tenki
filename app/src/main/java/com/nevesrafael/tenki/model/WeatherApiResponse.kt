@@ -3,13 +3,13 @@ package com.nevesrafael.tenki.model
 import com.google.gson.annotations.SerializedName
 
 data class WeatherApiResponse(
-    val list: List<WeatherDataApiResponse>,
-    val city: WeatherCityApiResponse
+    val list: List<WeatherDataApiResponse>
 )
 
 data class WeatherDataApiResponse(
     val main: WeatherTemperatureApiResponse,
-    val weather: List<WeatherStateApiResponse>
+    val weather: List<WeatherStateApiResponse>,
+    @SerializedName("dt_txt") val date: String
 )
 
 data class WeatherTemperatureApiResponse(
@@ -22,9 +22,4 @@ data class WeatherStateApiResponse(
     val main: String,
     val description: String,
     val icon: String
-)
-
-data class WeatherCityApiResponse(
-    val id: Long,
-    val name: String
 )

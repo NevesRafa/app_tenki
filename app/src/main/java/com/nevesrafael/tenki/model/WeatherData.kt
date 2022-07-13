@@ -10,5 +10,6 @@ data class WeatherData(
     val temperature: Int,
     val weekday: String,
     val state: String,
-    val localeName: String
+    val localeName: String,
+    val saveLocale: Boolean
 )

@@ -56,7 +56,7 @@
         android:id="@+id/icon_forecast"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/rain"
+        android:src="@drawable/clear_sky_day"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/temperature_forecast"

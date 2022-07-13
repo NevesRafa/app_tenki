@@ -3,12 +3,13 @@ package com.nevesrafael.tenki.home_screen
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.nevesrafael.tenki.TemperatureFormatter
 import com.nevesrafael.tenki.databinding.ItemWeekdayInformationBinding
-import com.nevesrafael.tenki.model.WeatherData
+import com.nevesrafael.tenki.model.WeatherDataApiResponse
 
 class HomeScreenAdapter() : RecyclerView.Adapter<HomeScreenViewHolder>() {
 
-    val dataset = mutableListOf<WeatherData>()
+    val weatherForecast = mutableListOf<WeatherDataApiResponse>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeScreenViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -17,27 +18,33 @@ class HomeScreenAdapter() : RecyclerView.Adapter<HomeScreenViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: HomeScreenViewHolder, position: Int) {
-        val item = dataset[position]
+        val item = weatherForecast[position]
         holder.bind(item)
     }
 
-    override fun getItemCount() = dataset.size
+    override fun getItemCount() = weatherForecast.size
 
-    fun update(dataset: List<WeatherData>) {
-        this.dataset.clear()
-        this.dataset.addAll(dataset)
+    fun update(weather: List<WeatherDataApiResponse>) {
+        this.weatherForecast.clear()
+        this.weatherForecast.addAll(weather)
         notifyDataSetChanged()
     }
 }
 
-
 class HomeScreenViewHolder(val binding: ItemWeekdayInformationBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(dataset: WeatherData) {
-        binding.weekdayForecast.text = dataset.weekday
-        binding.temperatureForecast.text = dataset.temperature.toString()
-        binding.stateForecast.text = dataset.state
+    fun bind(weather: WeatherDataApiResponse) {
+        binding.weekdayForecast.text = weather.date
+        binding.temperatureForecast.text =
+            TemperatureFormatter.kelvinToCelsius(weather.main.temp).toString()
+        binding.stateForecast.text = weather.weather.firstOrNull()?.description
+//        binding.iconForecast.load("https://openweathermap.org/img/wn/01d@4x.png")
+//
+//        if(weather.weather.first().description == "nublado"){
+//            // coloca nublado
+//        }
+//
     }
 
 }
