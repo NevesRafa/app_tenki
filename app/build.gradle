@@ -58,7 +58,4 @@ dependencies {
     //implementação de corrotina
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.0"
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
-
-    //implementação mascara
-    implementation 'com.github.santalu:maskara:1.0.0'
 }

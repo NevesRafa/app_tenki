@@ -47,9 +47,13 @@ class HomeScreenActivity : AppCompatActivity() {
         weatherToday: WeatherTodayApiResponse,
         weatherForecast: List<WeatherDataApiResponse>
     ) {
+
+
         binding.cityName.text = weatherToday.name
-        binding.temperature.text =
-            TemperatureFormatter.kelvinToCelsius(weatherToday.main.temp).toString()
+
+        val temp = TemperatureFormatter.kelvinToCelsius(weatherToday.main.temp)
+        binding.temperature.text = getString(R.string.temperature, temp)
+
         binding.climate.text = weatherToday.weather.first().description.replaceFirstChar {
             if (it.isLowerCase()) it.titlecase(
                 Locale.ROOT

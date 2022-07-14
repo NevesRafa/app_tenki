@@ -1,5 +1,6 @@
 package com.nevesrafael.tenki.home_screen
 
+
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -39,8 +40,10 @@ class HomeScreenViewHolder(val binding: ItemWeekdayInformationBinding) :
 
     fun bind(weather: WeatherDataApiResponse) {
         binding.weekdayForecast.text = DateFormatter.dateFormatter(weather.dateUnix)
+
+        val temp = TemperatureFormatter.kelvinToCelsius(weather.main.temp)
         binding.temperatureForecast.text =
-            TemperatureFormatter.kelvinToCelsius(weather.main.temp).toString()
+            binding.root.context.getString(R.string.temperature, temp)
 
         val mainTranslator = when (weather.weather.firstOrNull()?.main) {
             "Thunderstorm" -> "Trovoada"
