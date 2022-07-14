@@ -9,6 +9,7 @@ data class WeatherApiResponse(
 data class WeatherDataApiResponse(
     val main: WeatherTemperatureApiResponse,
     val weather: List<WeatherStateApiResponse>,
+    @SerializedName("dt") val dateUnix: Long,
     @SerializedName("dt_txt") val date: String
 )
 
