@@ -4,11 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import com.nevesrafael.tenki.R
 import com.nevesrafael.tenki.TemperatureFormatter
 import com.nevesrafael.tenki.databinding.ActivityHomeScreenBinding
 import com.nevesrafael.tenki.model.WeatherDataApiResponse
 import com.nevesrafael.tenki.model.WeatherTodayApiResponse
 import com.nevesrafael.tenki.search_screen.SearchScreenActivity
+import java.util.*
 
 class HomeScreenActivity : AppCompatActivity() {
 
@@ -24,9 +27,15 @@ class HomeScreenActivity : AppCompatActivity() {
 
         configureSearchButton()
         configuraRecyclerViewWeather()
+        configureStarButton()
         presenter.loadTemperatureData()
     }
 
+    private fun configureStarButton() {
+        binding.star.setOnClickListener {
+            presenter.saveCity()
+        }
+    }
 
     private fun configuraRecyclerViewWeather() {
         weatherAdapter = HomeScreenAdapter()
@@ -41,8 +50,11 @@ class HomeScreenActivity : AppCompatActivity() {
         binding.cityName.text = weatherToday.name
         binding.temperature.text =
             TemperatureFormatter.kelvinToCelsius(weatherToday.main.temp).toString()
-        binding.climate.text = weatherToday.weather[0].description
-
+        binding.climate.text = weatherToday.weather.first().description.replaceFirstChar {
+            if (it.isLowerCase()) it.titlecase(
+                Locale.ROOT
+            ) else it.toString()
+        }
         weatherAdapter.update(weatherForecast)
     }
 
@@ -60,6 +72,22 @@ class HomeScreenActivity : AppCompatActivity() {
             val intent = Intent(this, SearchScreenActivity::class.java)
             startActivity(intent)
         }
+    }
 
+    fun changeBackground(background: Int) {
+        val backgroundDrawable = ContextCompat.getDrawable(this, background)
+        binding.image.setImageDrawable(backgroundDrawable)
+    }
+
+    fun showStar() {
+        val starSelected = ContextCompat.getDrawable(this, R.drawable.ic_star_selected)
+
+        binding.star.setImageDrawable(starSelected)
+    }
+
+    fun hideStar() {
+        val starUnselected = ContextCompat.getDrawable(this, R.drawable.ic_star_unselected)
+
+        binding.star.setImageDrawable(starUnselected)
     }
 }

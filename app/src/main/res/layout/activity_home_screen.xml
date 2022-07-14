@@ -10,8 +10,8 @@
         android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/nublado"
-        android:scaleType="fitXY" />
+        android:scaleType="fitXY"
+        app:srcCompat="@color/black" />
 
     <ImageView
         android:layout_width="match_parent"
@@ -30,10 +30,10 @@
 
     <ImageView
         android:id="@+id/star"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_marginStart="16dp"
-        android:src="@drawable/ic_yellow_star"
+        android:src="@drawable/ic_star_selected"
         app:layout_constraintBottom_toTopOf="@id/temperature"
         app:layout_constraintEnd_toStartOf="@id/city_name"
         app:layout_constraintHorizontal_bias="0"
@@ -95,37 +95,32 @@
         android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0"
-        tools:text="It's Raining" />
+        tools:text="Algumas nuvens" />
 
     <ImageView
         android:id="@+id/shape_weather_forecast"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="32dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/shape_homescreen"
-        android:padding="48dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@id/recyclerview_weather_forecast"
+        app:layout_constraintEnd_toEndOf="@id/recyclerview_weather_forecast"
+        app:layout_constraintStart_toStartOf="@id/recyclerview_weather_forecast"
+        app:layout_constraintTop_toTopOf="@id/recyclerview_weather_forecast" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_weather_forecast"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="32dp"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="@id/shape_weather_forecast"
-        app:layout_constraintEnd_toEndOf="@id/shape_weather_forecast"
-        app:layout_constraintStart_toStartOf="@id/shape_weather_forecast"
-        app:layout_constraintTop_toTopOf="@id/shape_weather_forecast"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         tools:listitem="@layout/item_weekday_information" />
 
 

@@ -59,10 +59,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.0"
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
 
-    //implementação Coil (imangens)
-    implementation "io.coil-kt:coil:2.0.0-rc03"
-    implementation("io.coil-kt:coil-gif:2.0.0-rc03")
-
     //implementação mascara
     implementation 'com.github.santalu:maskara:1.0.0'
 }
