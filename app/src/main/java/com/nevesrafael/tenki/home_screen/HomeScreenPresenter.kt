@@ -49,24 +49,12 @@ class HomeScreenPresenter(val screen: HomeScreenActivity) {
         }
 
         val background = when (estado) {
-            "Thunderstorm" -> {
-                R.drawable.thunderstrorm
-            }
-            "Drizzle", "Rain" -> {
-                R.drawable.drizzle_rain
-            }
-            "Snow" -> {
-                R.drawable.snow
-            }
-            "Atmosphere" -> {
-                R.drawable.atmosphere
-            }
-            "Clear" -> {
-                R.drawable.clear
-            }
-            "Clouds" -> {
-                R.drawable.clouds
-            }
+            "Thunderstorm" -> R.drawable.thunderstrorm
+            "Drizzle", "Rain" -> R.drawable.drizzle_rain
+            "Snow" -> R.drawable.snow
+            "Atmosphere" -> R.drawable.atmosphere
+            "Clear" -> R.drawable.clear
+            "Clouds" -> R.drawable.clouds
             else -> null
         }
 
