@@ -19,7 +19,6 @@ class HomeScreenActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeScreenBinding
     private lateinit var presenter: HomeScreenPresenter
     private lateinit var weatherAdapter: HomeScreenAdapter
-    private var cityName: String? = null
 
     companion object {
         const val EXTRA_CITY_NAME = "extra.city.name"
@@ -35,12 +34,12 @@ class HomeScreenActivity : AppCompatActivity() {
         configureSearchButton()
         configureRecyclerViewWeather()
         configureStarButton()
-        presenter.loadTemperatureData(cityName)
+        presenter.loadTemperatureData(null)
     }
 
     private fun configureStarButton() {
         binding.star.setOnClickListener {
-            presenter.saveCity()
+            presenter.favoriteCity()
         }
     }
 
@@ -122,10 +121,11 @@ class HomeScreenActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == REQUEST_CODE_CITY_NAME && resultCode == Activity.RESULT_OK) {
-            cityName = data?.getStringExtra(EXTRA_CITY_NAME)
+            val cityName = data?.getStringExtra(EXTRA_CITY_NAME)
+
+            presenter.saveCity(cityName)
 
             presenter.loadTemperatureData(cityName)
-
         }
     }
 
