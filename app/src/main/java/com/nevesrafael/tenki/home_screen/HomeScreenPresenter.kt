@@ -18,19 +18,25 @@ class HomeScreenPresenter(val screen: HomeScreenActivity) {
         .build()
         .create(WeatherApi::class.java) // cria uma instancia da WeatherApi
 
-    fun loadTemperatureData() {
+    fun loadTemperatureData(city: String?) {
+        var cityName = city
+
+        if (cityName == null) {
+            cityName = "Sorocaba"
+        }
+
         screen.lifecycleScope.launch {
             screen.showLoading()
 
             val weatherToday = withContext(Dispatchers.IO) {
-                return@withContext weatherApi.getWeatherToday()
+                return@withContext weatherApi.getWeatherToday(cityName)
             }
 
             val weatherForecast = withContext(Dispatchers.IO) {
-                val answerFromApi = weatherApi.getWeatherForecast()
+                val answerFromApi = weatherApi.getWeatherForecast(cityName)
 
                 val filteredResults = answerFromApi.list
-                    .filter { it.date.endsWith("12:00:00") } // filtrando pelo clima de 12:00
+                    .filter { it.date.endsWith("15:00:00") } // filtrando pelo clima de 15:00
                     .takeLast(4) // pegando os ultimos 4 (ignora o hoje)
 
                 return@withContext filteredResults

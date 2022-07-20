@@ -1,5 +1,6 @@
 package com.nevesrafael.tenki.home_screen
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -18,6 +19,12 @@ class HomeScreenActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeScreenBinding
     private lateinit var presenter: HomeScreenPresenter
     private lateinit var weatherAdapter: HomeScreenAdapter
+    private var cityName: String? = null
+
+    companion object {
+        const val EXTRA_CITY_NAME = "extra.city.name"
+        const val REQUEST_CODE_CITY_NAME = 123
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,9 +33,9 @@ class HomeScreenActivity : AppCompatActivity() {
         presenter = HomeScreenPresenter(this)
 
         configureSearchButton()
-        configuraRecyclerViewWeather()
+        configureRecyclerViewWeather()
         configureStarButton()
-        presenter.loadTemperatureData()
+        presenter.loadTemperatureData(cityName)
     }
 
     private fun configureStarButton() {
@@ -37,7 +44,7 @@ class HomeScreenActivity : AppCompatActivity() {
         }
     }
 
-    private fun configuraRecyclerViewWeather() {
+    private fun configureRecyclerViewWeather() {
         weatherAdapter = HomeScreenAdapter()
         binding.recyclerviewWeatherForecast.adapter = weatherAdapter
     }
@@ -64,17 +71,33 @@ class HomeScreenActivity : AppCompatActivity() {
 
     fun showLoading() {
         binding.loading.visibility = View.VISIBLE
+        binding.image.visibility = View.GONE
+        binding.star.visibility = View.GONE
+        binding.search.visibility = View.GONE
+        binding.recyclerviewWeatherForecast.visibility = View.GONE
+        binding.shapeWeatherForecast.visibility = View.GONE
+        binding.cityName.visibility = View.GONE
+        binding.climate.visibility = View.GONE
+        binding.temperature.visibility = View.GONE
     }
 
     fun hideLoading() {
         binding.loading.visibility = View.GONE
+        binding.image.visibility = View.VISIBLE
+        binding.star.visibility = View.VISIBLE
+        binding.search.visibility = View.VISIBLE
+        binding.recyclerviewWeatherForecast.visibility = View.VISIBLE
+        binding.shapeWeatherForecast.visibility = View.VISIBLE
+        binding.cityName.visibility = View.VISIBLE
+        binding.climate.visibility = View.VISIBLE
+        binding.temperature.visibility = View.VISIBLE
     }
 
     private fun configureSearchButton() {
 
         binding.search.setOnClickListener {
             val intent = Intent(this, SearchScreenActivity::class.java)
-            startActivity(intent)
+            startActivityForResult(intent, REQUEST_CODE_CITY_NAME)
         }
     }
 
@@ -94,4 +117,17 @@ class HomeScreenActivity : AppCompatActivity() {
 
         binding.star.setImageDrawable(starUnselected)
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == REQUEST_CODE_CITY_NAME && resultCode == Activity.RESULT_OK) {
+            cityName = data?.getStringExtra(EXTRA_CITY_NAME)
+
+            presenter.loadTemperatureData(cityName)
+
+        }
+    }
+
+
 }

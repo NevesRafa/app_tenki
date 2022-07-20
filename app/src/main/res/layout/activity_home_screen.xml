@@ -4,29 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context=".home_screen.HomeScreenActivity">
 
     <ImageView
         android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        app:srcCompat="@color/black" />
+        android:scaleType="fitXY" />
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#59000000" />
 
-    <ProgressBar
+
+    <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/loading"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:visibility="gone"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/load" />
 
     <ImageView
         android:id="@+id/star"
