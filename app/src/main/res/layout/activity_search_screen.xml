@@ -26,7 +26,7 @@
         android:layout_marginEnd="16dp"
         app:endIconDrawable="@drawable/ic_search"
         app:endIconMode="custom"
-        app:layout_constraintBottom_toTopOf="@id/text_save_locations"
+        app:layout_constraintBottom_toTopOf="@id/text_search_locations"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -41,20 +41,43 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
-        android:id="@+id/text_save_locations"
+        android:id="@+id/text_search_locations"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/jost"
-        android:text="Saved Locations"
+        android:text="Search result"
+        android:textSize="16dp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toTopOf="@id/recyclerview_search_result"
+        app:layout_constraintStart_toStartOf="@id/recyclerview_search_result"
+        app:layout_constraintTop_toBottomOf="@id/search_input_text" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview_search_result"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toTopOf="@id/text_save_location"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_search_locations"
+        tools:listitem="@layout/item_search_location" />
+
+    <TextView
+        android:id="@+id/text_save_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/jost"
+        android:text="Saved locations"
         android:textSize="16dp"
         android:textStyle="italic"
         app:layout_constraintBottom_toTopOf="@id/recyclerview_save_location"
-        app:layout_constraintEnd_toEndOf="@id/recyclerview_save_location"
-        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="@id/recyclerview_save_location"
-        app:layout_constraintTop_toBottomOf="@id/search_input_text" />
-
+        app:layout_constraintTop_toBottomOf="@id/recyclerview_search_result" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_save_location"
@@ -62,10 +85,10 @@
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_save_locations"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_save_location"
         tools:listitem="@layout/item_saved_location" />
 
 

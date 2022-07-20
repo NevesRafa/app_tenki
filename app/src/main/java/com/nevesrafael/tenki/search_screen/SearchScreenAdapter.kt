@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.nevesrafael.tenki.databinding.ItemSavedLocationBinding
+import com.nevesrafael.tenki.databinding.ItemSearchLocationBinding
 import com.nevesrafael.tenki.model.CityApiResponse
 
 class SearchScreenAdapter(private val clickOnTheCity: (CityApiResponse) -> Unit) :
@@ -14,7 +14,7 @@ class SearchScreenAdapter(private val clickOnTheCity: (CityApiResponse) -> Unit)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchScreenViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = ItemSavedLocationBinding.inflate(inflater, parent, false)
+        val binding = ItemSearchLocationBinding.inflate(inflater, parent, false)
         return SearchScreenViewHolder(binding)
     }
 
@@ -32,7 +32,7 @@ class SearchScreenAdapter(private val clickOnTheCity: (CityApiResponse) -> Unit)
     }
 }
 
-class SearchScreenViewHolder(val binding: ItemSavedLocationBinding) :
+class SearchScreenViewHolder(val binding: ItemSearchLocationBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(
@@ -41,7 +41,7 @@ class SearchScreenViewHolder(val binding: ItemSavedLocationBinding) :
 
         binding.cityName.text = city.name
         binding.state.text = city.state
-        binding.country.load("https://countryflagsapi.com/png/${city.country}")
+        binding.flag.load("https://countryflagsapi.com/png/${city.country}")
 
         binding.root.setOnClickListener {
             clickOnTheCity(city)

@@ -6,18 +6,6 @@
     android:layout_margin="4dp">
 
 
-    <ImageView
-        android:id="@+id/star"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:src="@drawable/ic_star_selected"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/city_name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
     <TextView
         android:id="@+id/city_name"
         android:layout_width="wrap_content"
@@ -28,7 +16,7 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/state"
-        app:layout_constraintStart_toEndOf="@id/star"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView

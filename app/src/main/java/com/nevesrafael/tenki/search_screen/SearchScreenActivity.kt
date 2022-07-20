@@ -57,9 +57,9 @@ class SearchScreenActivity : AppCompatActivity() {
             setResult(Activity.RESULT_OK, intentToReturn)
             finish()
         })
-        binding.recyclerviewSaveLocation.layoutManager = LinearLayoutManager(this)
-        binding.recyclerviewSaveLocation.adapter = searchAdapter
-        binding.recyclerviewSaveLocation.addItemDecoration(
+        binding.recyclerviewSearchResult.layoutManager = LinearLayoutManager(this)
+        binding.recyclerviewSearchResult.adapter = searchAdapter
+        binding.recyclerviewSearchResult.addItemDecoration(
             DividerItemDecoration(
                 this,
                 LinearLayout.VERTICAL
