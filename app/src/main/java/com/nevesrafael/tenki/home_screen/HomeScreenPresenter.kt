@@ -3,6 +3,7 @@ package com.nevesrafael.tenki.home_screen
 import android.content.Context
 import androidx.lifecycle.lifecycleScope
 import com.nevesrafael.tenki.R
+import com.nevesrafael.tenki.database.AppDatabase
 import com.nevesrafael.tenki.model.WeatherApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -13,9 +14,12 @@ import kotlin.random.Random
 
 class HomeScreenPresenter(val screen: HomeScreenActivity) {
 
+    private val WeatherDao = AppDatabase.request(screen).weatherDao()
+
     companion object {
         const val SHARED_PREFERENCES_NAME = "db.tenki"
-        const val KEY_LAST_CITY = "lastcity"
+        const val KEY_LAT = "latitude"
+        const val KEY_LON = "longitude"
     }
 
     val weatherApi = Retrofit.Builder() //cria o "Criador"
@@ -24,26 +28,28 @@ class HomeScreenPresenter(val screen: HomeScreenActivity) {
         .build()
         .create(WeatherApi::class.java) // cria uma instancia da WeatherApi
 
-    fun loadTemperatureData(city: String?) {
-        var cityName = city
+    fun loadTemperatureData(lat: Long?, long: Long?) {
+        var latitude = lat ?: 0L
+        var longitude = long ?: 0L
 
-        if (cityName == null) {
+        if (latitude == 0L && longitude == 0L) {
             //recupera a ultima cidade pesquisada no sharedPreference
             val sharedPreference =
                 screen.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
 
-            cityName = sharedPreference.getString(KEY_LAST_CITY, null) ?: "Sao Paulo"
+            latitude = sharedPreference.getLong(KEY_LAT, (-23.5003451).toLong())
+            longitude = sharedPreference.getLong(KEY_LON, (-47.4582864).toLong())
         }
 
         screen.lifecycleScope.launch {
             screen.showLoading()
 
             val weatherToday = withContext(Dispatchers.IO) {
-                return@withContext weatherApi.getWeatherToday(cityName)
+                return@withContext weatherApi.getWeatherToday(latitude, longitude)
             }
 
             val weatherForecast = withContext(Dispatchers.IO) {
-                val answerFromApi = weatherApi.getWeatherForecast(cityName)
+                val answerFromApi = weatherApi.getWeatherForecast(latitude, longitude)
 
                 val filteredResults = answerFromApi.list
                     .filter { it.date.endsWith("15:00:00") } // filtrando pelo clima de 15:00
@@ -95,11 +101,17 @@ class HomeScreenPresenter(val screen: HomeScreenActivity) {
 
 
     //para salvar a ultima cidade pesquisada
-    fun saveCity(city: String?) {
+    fun saveCity(lat: Long?, lon: Long?) {
+        if (lat == null || lon == null) {
+            return
+        }
+
         val sharedPreference =
             screen.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
         val editor = sharedPreference.edit()
-        editor.putString(KEY_LAST_CITY, city)
+        editor.putLong(KEY_LAT, lat)
+        editor.putLong(KEY_LON, lon)
         editor.apply()
+
     }
 }

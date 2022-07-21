@@ -22,7 +22,12 @@ class HomeScreenActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_CITY_NAME = "extra.city.name"
+        const val EXTRA_CITY_LAT = "extra.city.lat"
+        const val EXTRA_CITY_LON = "extra.city.lon"
+        const val EXTRA_CITY_COUNTRY = "extra.city.country"
+        const val EXTRA_CITY_STATE = "extra.city.state"
         const val REQUEST_CODE_CITY_NAME = 123
+        const val REQUEST_CODE_FULL_CITY = 456
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +39,7 @@ class HomeScreenActivity : AppCompatActivity() {
         configureSearchButton()
         configureRecyclerViewWeather()
         configureStarButton()
-        presenter.loadTemperatureData(null)
+        presenter.loadTemperatureData(0L, 0L)
     }
 
     private fun configureStarButton() {
@@ -121,11 +126,21 @@ class HomeScreenActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == REQUEST_CODE_CITY_NAME && resultCode == Activity.RESULT_OK) {
+            var lat = data?.getLongExtra(EXTRA_CITY_LAT, 0L)
+            var lon = data?.getLongExtra(EXTRA_CITY_LON, 0L)
+
+            presenter.saveCity(lat, lon)
+
+            presenter.loadTemperatureData(lat, lon)
+        }
+
+        if (requestCode == REQUEST_CODE_FULL_CITY && resultCode == Activity.RESULT_OK) {
             val cityName = data?.getStringExtra(EXTRA_CITY_NAME)
+            val lat = data?.getLongExtra(EXTRA_CITY_LAT, 0)
+            val lon = data?.getLongExtra(EXTRA_CITY_LON, 0)
+            val country = data?.getStringExtra(EXTRA_CITY_COUNTRY)
+            val state = data?.getStringExtra(EXTRA_CITY_STATE)
 
-            presenter.saveCity(cityName)
-
-            presenter.loadTemperatureData(cityName)
         }
     }
 

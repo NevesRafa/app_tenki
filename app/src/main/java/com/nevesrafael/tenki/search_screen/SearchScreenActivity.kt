@@ -17,7 +17,8 @@ class SearchScreenActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchScreenBinding
     private lateinit var presenter: SearchScreenPresenter
-    private lateinit var searchAdapter: SearchScreenAdapter
+    private lateinit var searchAdapter: SearchLocationAdapter
+    private lateinit var saveAdapter: SavedLocationAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,8 +27,10 @@ class SearchScreenActivity : AppCompatActivity() {
         presenter = SearchScreenPresenter(this)
 
         clickToSearch()
-        configureRecyclerViewSearchCity()
+        configureRecyclerViewSearchLocation()
+        configureRecyclerViewSavedLocation()
     }
+
 
     fun clickToSearch() {
         binding.searchInputText.setEndIconOnClickListener {
@@ -50,20 +53,39 @@ class SearchScreenActivity : AppCompatActivity() {
         Toast.makeText(this, "Not found!", Toast.LENGTH_SHORT).show()
     }
 
-    fun configureRecyclerViewSearchCity() {
-        searchAdapter = SearchScreenAdapter(clickOnTheCity = { city ->
+    private fun configureRecyclerViewSavedLocation() {
+        saveAdapter = SavedLocationAdapter(savedCityClick = { city ->
             val intentToReturn = Intent()
-            intentToReturn.putExtra(HomeScreenActivity.EXTRA_CITY_NAME, city.name)
+            intentToReturn.putExtra(HomeScreenActivity.EXTRA_CITY_NAME, city.cityName)
+            intentToReturn.putExtra(HomeScreenActivity.EXTRA_CITY_COUNTRY, city.country)
+            intentToReturn.putExtra(HomeScreenActivity.EXTRA_CITY_LAT, city.lat)
+            intentToReturn.putExtra(HomeScreenActivity.EXTRA_CITY_LON, city.lon)
+            intentToReturn.putExtra(HomeScreenActivity.EXTRA_CITY_STATE, city.state)
+            setResult(Activity.RESULT_OK, intentToReturn)
+            finish()
+        })
+        binding.recyclerviewSaveLocation.layoutManager = LinearLayoutManager(this)
+        binding.recyclerviewSaveLocation.adapter = saveAdapter
+        binding.recyclerviewSaveLocation.addItemDecoration(
+            DividerItemDecoration(
+                this,
+                LinearLayout.VERTICAL
+            )
+        )
+    }
+
+    fun configureRecyclerViewSearchLocation() {
+        searchAdapter = SearchLocationAdapter(clickOnTheCity = { city ->
+            val intentToReturn = Intent()
+            intentToReturn.putExtra(HomeScreenActivity.EXTRA_CITY_LAT, city.lat)
+            intentToReturn.putExtra(HomeScreenActivity.EXTRA_CITY_LON, city.lon)
             setResult(Activity.RESULT_OK, intentToReturn)
             finish()
         })
         binding.recyclerviewSearchResult.layoutManager = LinearLayoutManager(this)
         binding.recyclerviewSearchResult.adapter = searchAdapter
         binding.recyclerviewSearchResult.addItemDecoration(
-            DividerItemDecoration(
-                this,
-                LinearLayout.VERTICAL
-            )
+            DividerItemDecoration(this, LinearLayout.VERTICAL)
         )
     }
 

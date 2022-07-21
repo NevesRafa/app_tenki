@@ -1,9 +1,6 @@
 package com.nevesrafael.tenki.database
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import com.nevesrafael.tenki.model.WeatherData
 
 @Dao
@@ -20,4 +17,7 @@ interface WeatherDao {
 
     @Update
     fun alter(weather: WeatherData)
+
+    @Insert
+    fun save(weather: WeatherData)
 }

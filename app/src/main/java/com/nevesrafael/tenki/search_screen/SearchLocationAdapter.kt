@@ -7,18 +7,18 @@ import coil.load
 import com.nevesrafael.tenki.databinding.ItemSearchLocationBinding
 import com.nevesrafael.tenki.model.CityApiResponse
 
-class SearchScreenAdapter(private val clickOnTheCity: (CityApiResponse) -> Unit) :
-    RecyclerView.Adapter<SearchScreenViewHolder>() {
+class SearchLocationAdapter(private val clickOnTheCity: (CityApiResponse) -> Unit) :
+    RecyclerView.Adapter<SearchLocationViewHolder>() {
 
     val citySearch = mutableListOf<CityApiResponse>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchScreenViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchLocationViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemSearchLocationBinding.inflate(inflater, parent, false)
-        return SearchScreenViewHolder(binding)
+        return SearchLocationViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: SearchScreenViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: SearchLocationViewHolder, position: Int) {
         val item = citySearch[position]
         holder.bind(item, clickOnTheCity)
     }
@@ -32,7 +32,7 @@ class SearchScreenAdapter(private val clickOnTheCity: (CityApiResponse) -> Unit)
     }
 }
 
-class SearchScreenViewHolder(val binding: ItemSearchLocationBinding) :
+class SearchLocationViewHolder(val binding: ItemSearchLocationBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(
