@@ -5,16 +5,17 @@ import androidx.lifecycle.lifecycleScope
 import com.nevesrafael.tenki.R
 import com.nevesrafael.tenki.database.AppDatabase
 import com.nevesrafael.tenki.model.WeatherApi
+import com.nevesrafael.tenki.model.WeatherData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import kotlin.random.Random
 
 class HomeScreenPresenter(val screen: HomeScreenActivity) {
 
-    private val WeatherDao = AppDatabase.request(screen).weatherDao()
+    private val weatherDao = AppDatabase.request(screen).weatherDao()
+    private var selectedCity = WeatherData(0, "", "", 0.0, 0.0, "")
 
     companion object {
         const val SHARED_PREFERENCES_NAME = "db.tenki"
@@ -28,28 +29,27 @@ class HomeScreenPresenter(val screen: HomeScreenActivity) {
         .build()
         .create(WeatherApi::class.java) // cria uma instancia da WeatherApi
 
-    fun loadTemperatureData(lat: Long?, long: Long?) {
-        var latitude = lat ?: 0L
-        var longitude = long ?: 0L
+    fun loadTemperatureData(lat: Double, lon: Double) {
+        selectedCity.lat = lat
+        selectedCity.lon = lon
 
-        if (latitude == 0L && longitude == 0L) {
+        if (lat == 0.0 && lon == 0.0) {
             //recupera a ultima cidade pesquisada no sharedPreference
-            val sharedPreference =
-                screen.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
+            val sharedPreference = screen.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
 
-            latitude = sharedPreference.getLong(KEY_LAT, (-23.5003451).toLong())
-            longitude = sharedPreference.getLong(KEY_LON, (-47.4582864).toLong())
+            selectedCity.lat = sharedPreference.getString(KEY_LAT, null)?.toDoubleOrNull() ?: -23.5003451
+            selectedCity.lon = sharedPreference.getString(KEY_LON, null)?.toDoubleOrNull() ?: -47.4582864
         }
 
         screen.lifecycleScope.launch {
             screen.showLoading()
 
             val weatherToday = withContext(Dispatchers.IO) {
-                return@withContext weatherApi.getWeatherToday(latitude, longitude)
+                return@withContext weatherApi.getWeatherToday(selectedCity.lat, selectedCity.lon)
             }
 
             val weatherForecast = withContext(Dispatchers.IO) {
-                val answerFromApi = weatherApi.getWeatherForecast(latitude, longitude)
+                val answerFromApi = weatherApi.getWeatherForecast(selectedCity.lat, selectedCity.lon)
 
                 val filteredResults = answerFromApi.list
                     .filter { it.date.endsWith("15:00:00") } // filtrando pelo clima de 15:00
@@ -62,7 +62,16 @@ class HomeScreenPresenter(val screen: HomeScreenActivity) {
 
             screen.showOnScreen(weatherToday, weatherForecast)
             changeBackgroundImage(weatherToday.weather.firstOrNull()?.main)
+
+            fillSelectedCity(weatherToday.name, weatherToday.id)
+            saveCityInMemory()
+            checkFavorite()
         }
+    }
+
+    private fun fillSelectedCity(cityName: String, cityId: Long) {
+        selectedCity.cityName = cityName
+        selectedCity.id = cityId
     }
 
     fun changeBackgroundImage(state: String?) {
@@ -85,33 +94,35 @@ class HomeScreenPresenter(val screen: HomeScreenActivity) {
         }
     }
 
-    fun favoriteCity() {
-        //logica de salvar ou não a cidade
+    fun checkFavorite() {
+        val city = weatherDao.searchById(selectedCity.id)
 
-        // vc vai salvar ou tirar do banco a cidade
-
-        if (Random.nextBoolean()) {
-            // aí se tiver salvo
+        if (city != null) {
             screen.showStar()
+
         } else {
-            // e se tiver removido
             screen.hideStar()
         }
     }
 
+    fun favoriteCity() {
+        val city = weatherDao.searchById(selectedCity.id)
 
-    //para salvar a ultima cidade pesquisada
-    fun saveCity(lat: Long?, lon: Long?) {
-        if (lat == null || lon == null) {
-            return
+        if (city != null) {
+            weatherDao.remove(selectedCity.id)
+        } else {
+            weatherDao.save(selectedCity)
         }
 
-        val sharedPreference =
-            screen.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
-        val editor = sharedPreference.edit()
-        editor.putLong(KEY_LAT, lat)
-        editor.putLong(KEY_LON, lon)
-        editor.apply()
+        checkFavorite()
+    }
 
+    //para salvar a ultima cidade pesquisada
+    fun saveCityInMemory() {
+        val sharedPreference = screen.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
+        val editor = sharedPreference.edit()
+        editor.putString(KEY_LAT, selectedCity.lat.toString())
+        editor.putString(KEY_LON, selectedCity.lon.toString())
+        editor.apply()
     }
 }

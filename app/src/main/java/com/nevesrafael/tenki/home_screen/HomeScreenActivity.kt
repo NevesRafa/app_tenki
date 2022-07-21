@@ -26,8 +26,7 @@ class HomeScreenActivity : AppCompatActivity() {
         const val EXTRA_CITY_LON = "extra.city.lon"
         const val EXTRA_CITY_COUNTRY = "extra.city.country"
         const val EXTRA_CITY_STATE = "extra.city.state"
-        const val REQUEST_CODE_CITY_NAME = 123
-        const val REQUEST_CODE_FULL_CITY = 456
+        const val REQUEST_CODE_SEARCH = 123
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,13 +38,7 @@ class HomeScreenActivity : AppCompatActivity() {
         configureSearchButton()
         configureRecyclerViewWeather()
         configureStarButton()
-        presenter.loadTemperatureData(0L, 0L)
-    }
-
-    private fun configureStarButton() {
-        binding.star.setOnClickListener {
-            presenter.favoriteCity()
-        }
+        presenter.loadTemperatureData(0.0, 0.0)
     }
 
     private fun configureRecyclerViewWeather() {
@@ -53,12 +46,10 @@ class HomeScreenActivity : AppCompatActivity() {
         binding.recyclerviewWeatherForecast.adapter = weatherAdapter
     }
 
-
     fun showOnScreen(
         weatherToday: WeatherTodayApiResponse,
         weatherForecast: List<WeatherDataApiResponse>
     ) {
-
 
         binding.cityName.text = weatherToday.name
 
@@ -101,9 +92,16 @@ class HomeScreenActivity : AppCompatActivity() {
 
         binding.search.setOnClickListener {
             val intent = Intent(this, SearchScreenActivity::class.java)
-            startActivityForResult(intent, REQUEST_CODE_CITY_NAME)
+            startActivityForResult(intent, REQUEST_CODE_SEARCH)
         }
     }
+
+    private fun configureStarButton() {
+        binding.star.setOnClickListener {
+            presenter.favoriteCity()
+        }
+    }
+
 
     fun changeBackground(background: Int) {
         val backgroundDrawable = ContextCompat.getDrawable(this, background)
@@ -125,24 +123,15 @@ class HomeScreenActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == REQUEST_CODE_CITY_NAME && resultCode == Activity.RESULT_OK) {
-            var lat = data?.getLongExtra(EXTRA_CITY_LAT, 0L)
-            var lon = data?.getLongExtra(EXTRA_CITY_LON, 0L)
-
-            presenter.saveCity(lat, lon)
-
-            presenter.loadTemperatureData(lat, lon)
-        }
-
-        if (requestCode == REQUEST_CODE_FULL_CITY && resultCode == Activity.RESULT_OK) {
-            val cityName = data?.getStringExtra(EXTRA_CITY_NAME)
-            val lat = data?.getLongExtra(EXTRA_CITY_LAT, 0)
-            val lon = data?.getLongExtra(EXTRA_CITY_LON, 0)
+        if (requestCode == REQUEST_CODE_SEARCH && resultCode == Activity.RESULT_OK) {
+            val lat = data?.getDoubleExtra(EXTRA_CITY_LAT, 0.0) ?: 0.0
+            val lon = data?.getDoubleExtra(EXTRA_CITY_LON, 0.0) ?: 0.0
             val country = data?.getStringExtra(EXTRA_CITY_COUNTRY)
             val state = data?.getStringExtra(EXTRA_CITY_STATE)
 
+            presenter.loadTemperatureData(lat, lon)
+
         }
+
     }
-
-
 }

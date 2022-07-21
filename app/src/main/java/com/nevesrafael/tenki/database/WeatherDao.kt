@@ -1,6 +1,9 @@
 package com.nevesrafael.tenki.database
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
 import com.nevesrafael.tenki.model.WeatherData
 
 @Dao
@@ -10,10 +13,10 @@ interface WeatherDao {
     fun searchAll(): List<WeatherData>
 
     @Query("SELECT * FROM WeatherData WHERE id = :id")
-    fun searchId(id: Int): WeatherData?
+    fun searchById(id: Long): WeatherData?
 
-    @Delete
-    fun remove(weather: WeatherData)
+    @Query("DELETE FROM WeatherData WHERE id = :id")
+    fun remove(id: Long)
 
     @Update
     fun alter(weather: WeatherData)

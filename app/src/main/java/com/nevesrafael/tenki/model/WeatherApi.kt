@@ -7,8 +7,8 @@ interface WeatherApi {
 
     @GET("data/2.5/forecast")
     suspend fun getWeatherForecast(
-        @Query("lat") lat: Long,
-        @Query("lon") lon: Long,
+        @Query("lat") lat: Double,
+        @Query("lon") lon: Double,
         @Query("lang") language: String = "pt_br",
         @Query("appid") key: String = "87c2ecbeb52654589432513009c0bd19"
     ): WeatherApiResponse
@@ -16,8 +16,8 @@ interface WeatherApi {
 
     @GET("data/2.5/weather")
     suspend fun getWeatherToday(
-        @Query("lat") lat: Long,
-        @Query("lon") lon: Long,
+        @Query("lat") lat: Double,
+        @Query("lon") lon: Double,
         @Query("lang") language: String = "pt_br",
         @Query("appid") key: String = "87c2ecbeb52654589432513009c0bd19"
     ): WeatherTodayApiResponse

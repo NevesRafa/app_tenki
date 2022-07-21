@@ -6,12 +6,10 @@ import androidx.room.PrimaryKey
 @Entity
 data class WeatherData(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
-    val state: String,
-    val flag: String,
-    val cityName: String,
-    val lat: Long,
-    val lon: Long,
-    val saveCity: Boolean,
-    val country: String
+    var id: Long = 0L,
+    var state: String,
+    var cityName: String,
+    var lat: Double,
+    var lon: Double,
+    var country: String
 )
