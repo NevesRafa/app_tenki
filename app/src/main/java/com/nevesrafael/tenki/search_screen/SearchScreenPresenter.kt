@@ -1,6 +1,7 @@
 package com.nevesrafael.tenki.search_screen
 
 import androidx.lifecycle.lifecycleScope
+import com.nevesrafael.tenki.database.AppDatabase
 import com.nevesrafael.tenki.model.CityApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -9,6 +10,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchScreenPresenter(val screen: SearchScreenActivity) {
+
+    private val weatherDao = AppDatabase.request(screen).weatherDao()
 
     val cityApi = Retrofit.Builder()
         .baseUrl("https://api.openweathermap.org/")
@@ -39,5 +42,10 @@ class SearchScreenPresenter(val screen: SearchScreenActivity) {
                 }
             }
         }
+    }
+
+    fun savedCities() {
+        val listOfCities = weatherDao.searchAll()
+        screen.showListSavedCities(listOfCities)
     }
 }

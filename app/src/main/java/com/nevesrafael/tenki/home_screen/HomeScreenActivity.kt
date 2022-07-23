@@ -126,10 +126,11 @@ class HomeScreenActivity : AppCompatActivity() {
         if (requestCode == REQUEST_CODE_SEARCH && resultCode == Activity.RESULT_OK) {
             val lat = data?.getDoubleExtra(EXTRA_CITY_LAT, 0.0) ?: 0.0
             val lon = data?.getDoubleExtra(EXTRA_CITY_LON, 0.0) ?: 0.0
-            val country = data?.getStringExtra(EXTRA_CITY_COUNTRY)
+            val country = data?.getStringExtra(EXTRA_CITY_COUNTRY) ?: ""
             val state = data?.getStringExtra(EXTRA_CITY_STATE)
 
             presenter.loadTemperatureData(lat, lon)
+
 
         }
 

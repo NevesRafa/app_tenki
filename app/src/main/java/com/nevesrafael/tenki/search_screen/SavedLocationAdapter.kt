@@ -39,7 +39,7 @@ class SavedLocationViewHolder(val binding: ItemSavedLocationBinding) :
 
         binding.cityName.text = city.cityName
         binding.state.text = city.state
-        binding.flag.load("https://countryflagsapi.com/png/${city.flag}")
+        binding.flag.load("https://countryflagsapi.com/png/${city.country}")
 
         binding.root.setOnClickListener {
             savedCityClick(city)

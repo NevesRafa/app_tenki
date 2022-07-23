@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.nevesrafael.tenki.databinding.ActivitySearchScreenBinding
 import com.nevesrafael.tenki.home_screen.HomeScreenActivity
 import com.nevesrafael.tenki.model.CityApiResponse
+import com.nevesrafael.tenki.model.WeatherData
 
 class SearchScreenActivity : AppCompatActivity() {
 
@@ -29,6 +30,7 @@ class SearchScreenActivity : AppCompatActivity() {
         clickToSearch()
         configureRecyclerViewSearchLocation()
         configureRecyclerViewSavedLocation()
+        presenter.savedCities()
     }
 
 
@@ -56,11 +58,8 @@ class SearchScreenActivity : AppCompatActivity() {
     private fun configureRecyclerViewSavedLocation() {
         saveAdapter = SavedLocationAdapter(savedCityClick = { city ->
             val intentToReturn = Intent()
-            intentToReturn.putExtra(HomeScreenActivity.EXTRA_CITY_NAME, city.cityName)
-            intentToReturn.putExtra(HomeScreenActivity.EXTRA_CITY_COUNTRY, city.country)
             intentToReturn.putExtra(HomeScreenActivity.EXTRA_CITY_LAT, city.lat)
             intentToReturn.putExtra(HomeScreenActivity.EXTRA_CITY_LON, city.lon)
-            intentToReturn.putExtra(HomeScreenActivity.EXTRA_CITY_STATE, city.state)
             setResult(Activity.RESULT_OK, intentToReturn)
             finish()
         })
@@ -79,6 +78,8 @@ class SearchScreenActivity : AppCompatActivity() {
             val intentToReturn = Intent()
             intentToReturn.putExtra(HomeScreenActivity.EXTRA_CITY_LAT, city.lat)
             intentToReturn.putExtra(HomeScreenActivity.EXTRA_CITY_LON, city.lon)
+            intentToReturn.putExtra(HomeScreenActivity.EXTRA_CITY_COUNTRY, city.country)
+            intentToReturn.putExtra(HomeScreenActivity.EXTRA_CITY_STATE, city.state)
             setResult(Activity.RESULT_OK, intentToReturn)
             finish()
         })
@@ -95,5 +96,9 @@ class SearchScreenActivity : AppCompatActivity() {
 
     fun searchIsBlank() {
         Toast.makeText(this, "Please fill in the search field!", Toast.LENGTH_SHORT).show()
+    }
+
+    fun showListSavedCities(listOfCities: List<WeatherData>) {
+        saveAdapter.update(listOfCities)
     }
 }

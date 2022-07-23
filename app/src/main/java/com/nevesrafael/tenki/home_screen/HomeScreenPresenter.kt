@@ -69,9 +69,10 @@ class HomeScreenPresenter(val screen: HomeScreenActivity) {
         }
     }
 
-    private fun fillSelectedCity(cityName: String, cityId: Long) {
+    fun fillSelectedCity(cityName: String, cityId: Long) {
         selectedCity.cityName = cityName
         selectedCity.id = cityId
+
     }
 
     fun changeBackgroundImage(state: String?) {
