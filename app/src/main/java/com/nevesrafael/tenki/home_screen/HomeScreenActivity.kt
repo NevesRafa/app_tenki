@@ -20,8 +20,8 @@ class HomeScreenActivity : AppCompatActivity() {
     private lateinit var presenter: HomeScreenPresenter
     private lateinit var weatherAdapter: HomeScreenAdapter
 
+
     companion object {
-        const val EXTRA_CITY_NAME = "extra.city.name"
         const val EXTRA_CITY_LAT = "extra.city.lat"
         const val EXTRA_CITY_LON = "extra.city.lon"
         const val EXTRA_CITY_COUNTRY = "extra.city.country"
@@ -38,7 +38,7 @@ class HomeScreenActivity : AppCompatActivity() {
         configureSearchButton()
         configureRecyclerViewWeather()
         configureStarButton()
-        presenter.loadTemperatureData(0.0, 0.0)
+        presenter.loadTemperatureData(0.0, 0.0, "", "")
     }
 
     private fun configureRecyclerViewWeather() {
@@ -127,9 +127,9 @@ class HomeScreenActivity : AppCompatActivity() {
             val lat = data?.getDoubleExtra(EXTRA_CITY_LAT, 0.0) ?: 0.0
             val lon = data?.getDoubleExtra(EXTRA_CITY_LON, 0.0) ?: 0.0
             val country = data?.getStringExtra(EXTRA_CITY_COUNTRY) ?: ""
-            val state = data?.getStringExtra(EXTRA_CITY_STATE)
+            val state = data?.getStringExtra(EXTRA_CITY_STATE) ?: ""
 
-            presenter.loadTemperatureData(lat, lon)
+            presenter.loadTemperatureData(lat, lon, country, state)
 
 
         }

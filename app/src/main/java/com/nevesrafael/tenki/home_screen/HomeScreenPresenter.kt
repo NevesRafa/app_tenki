@@ -29,9 +29,11 @@ class HomeScreenPresenter(val screen: HomeScreenActivity) {
         .build()
         .create(WeatherApi::class.java) // cria uma instancia da WeatherApi
 
-    fun loadTemperatureData(lat: Double, lon: Double) {
+    fun loadTemperatureData(lat: Double, lon: Double, country: String, state: String) {
         selectedCity.lat = lat
         selectedCity.lon = lon
+        selectedCity.country = country
+        selectedCity.state = state
 
         if (lat == 0.0 && lon == 0.0) {
             //recupera a ultima cidade pesquisada no sharedPreference
@@ -39,6 +41,9 @@ class HomeScreenPresenter(val screen: HomeScreenActivity) {
 
             selectedCity.lat = sharedPreference.getString(KEY_LAT, null)?.toDoubleOrNull() ?: -23.5003451
             selectedCity.lon = sharedPreference.getString(KEY_LON, null)?.toDoubleOrNull() ?: -47.4582864
+            selectedCity.country = sharedPreference.getString("KEY_COUNTRY", null) ?: "BR"
+            selectedCity.state = sharedPreference.getString("KEY_STATE", null) ?: "São Paulo"
+
         }
 
         screen.lifecycleScope.launch {
@@ -60,9 +65,10 @@ class HomeScreenPresenter(val screen: HomeScreenActivity) {
 
             screen.hideLoading()
 
+
+
             screen.showOnScreen(weatherToday, weatherForecast)
             changeBackgroundImage(weatherToday.weather.firstOrNull()?.main)
-
             fillSelectedCity(weatherToday.name, weatherToday.id)
             saveCityInMemory()
             checkFavorite()
@@ -118,12 +124,15 @@ class HomeScreenPresenter(val screen: HomeScreenActivity) {
         checkFavorite()
     }
 
+
     //para salvar a ultima cidade pesquisada
     fun saveCityInMemory() {
         val sharedPreference = screen.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
         val editor = sharedPreference.edit()
         editor.putString(KEY_LAT, selectedCity.lat.toString())
         editor.putString(KEY_LON, selectedCity.lon.toString())
+        editor.putString("KEY_COUNTRY", selectedCity.country)
+        editor.putString("KEY_STATE", selectedCity.state)
         editor.apply()
     }
 }
