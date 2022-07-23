@@ -26,6 +26,7 @@ class HomeScreenActivity : AppCompatActivity() {
         const val EXTRA_CITY_LON = "extra.city.lon"
         const val EXTRA_CITY_COUNTRY = "extra.city.country"
         const val EXTRA_CITY_STATE = "extra.city.state"
+        const val EXTRA_CITY_NAME = "extra.city.name"
         const val REQUEST_CODE_SEARCH = 123
     }
 
@@ -38,7 +39,7 @@ class HomeScreenActivity : AppCompatActivity() {
         configureSearchButton()
         configureRecyclerViewWeather()
         configureStarButton()
-        presenter.loadTemperatureData(0.0, 0.0, "", "")
+        presenter.loadTemperatureData("", "", "")
     }
 
     private fun configureRecyclerViewWeather() {
@@ -124,12 +125,11 @@ class HomeScreenActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == REQUEST_CODE_SEARCH && resultCode == Activity.RESULT_OK) {
-            val lat = data?.getDoubleExtra(EXTRA_CITY_LAT, 0.0) ?: 0.0
-            val lon = data?.getDoubleExtra(EXTRA_CITY_LON, 0.0) ?: 0.0
             val country = data?.getStringExtra(EXTRA_CITY_COUNTRY) ?: ""
             val state = data?.getStringExtra(EXTRA_CITY_STATE) ?: ""
+            val name = data?.getStringExtra(EXTRA_CITY_NAME) ?: ""
 
-            presenter.loadTemperatureData(lat, lon, country, state)
+            presenter.loadTemperatureData(name, country, state)
 
 
         }
