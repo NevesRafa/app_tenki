@@ -34,11 +34,14 @@ class HomeScreenActivity : AppCompatActivity() {
         setContentView(binding.root)
         presenter = HomeScreenPresenter(this)
 
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+        actionBar?.hide()
+
         configureSearchButton()
         configureRecyclerViewWeather()
         configureStarButton()
         presenter.loadTemperatureData("", "", "")
-            }
+    }
 
     private fun configureRecyclerViewWeather() {
         weatherAdapter = HomeScreenAdapter()
