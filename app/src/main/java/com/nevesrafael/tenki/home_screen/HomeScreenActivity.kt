@@ -22,8 +22,6 @@ class HomeScreenActivity : AppCompatActivity() {
 
 
     companion object {
-        const val EXTRA_CITY_LAT = "extra.city.lat"
-        const val EXTRA_CITY_LON = "extra.city.lon"
         const val EXTRA_CITY_COUNTRY = "extra.city.country"
         const val EXTRA_CITY_STATE = "extra.city.state"
         const val EXTRA_CITY_NAME = "extra.city.name"
@@ -40,7 +38,7 @@ class HomeScreenActivity : AppCompatActivity() {
         configureRecyclerViewWeather()
         configureStarButton()
         presenter.loadTemperatureData("", "", "")
-    }
+            }
 
     private fun configureRecyclerViewWeather() {
         weatherAdapter = HomeScreenAdapter()
