@@ -67,7 +67,7 @@ class HomeScreenViewHolder(val binding: ItemWeekdayInformationBinding) :
             "10d" -> R.drawable.ic_rain_day
             "10n" -> R.drawable.ic_rain_night
             "11d", "11n" -> R.drawable.ic_thunderstorm_day_night
-            "13d", "13n" -> R.drawable.snow
+            "13d", "13n" -> R.drawable.ic_snow
             "50d", "50n" -> R.drawable.ic_mist
             else -> null
         }

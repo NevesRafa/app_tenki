@@ -68,7 +68,7 @@ class HomeScreenPresenter(val screen: HomeScreenActivity) {
 
 
             screen.showOnScreen(weatherToday, weatherForecast)
-            changeBackgroundImage(weatherToday.weather.firstOrNull()?.main)
+            changeBackgroundImage(weatherToday.weather.firstOrNull()?.main, weatherToday.weather.first().icon)
             fillSelectedCity(weatherToday.name, weatherToday.id)
             saveCityInMemory()
             checkFavorite()
@@ -81,19 +81,48 @@ class HomeScreenPresenter(val screen: HomeScreenActivity) {
 
     }
 
-    fun changeBackgroundImage(state: String?) {
+    fun changeBackgroundImage(state: String?, weather: String) {
         if (state == null) {
             return
         }
 
-        val background = when (state) {
-            "Thunderstorm" -> R.drawable.thunderstrorm
-            "Drizzle", "Rain" -> R.drawable.drizzle_rain
-            "Snow" -> R.drawable.snow
-            "Atmosphere" -> R.drawable.atmosphere
-            "Clear" -> R.drawable.clear
-            "Clouds" -> R.drawable.clouds
-            else -> null
+        val background = when {
+            state == "Thunderstorm" && weather == "11d" -> {
+                R.drawable.thunderstrorm_day
+            }
+            state == "Thunderstorm" && weather == "11n" -> {
+                R.drawable.thunderstrorm_night
+            }
+            state == "Drizzle" || state == "Rain" && weather == "09d" || weather == "10d" -> {
+                R.drawable.drizzle_rain_day
+            }
+            state == "Drizzle" || state == "Rain" && weather == "09n" || weather == "10n" -> {
+                R.drawable.drizzle_rain_night
+            }
+            state == "Snow" && weather == "13d" -> {
+                R.drawable.snow_day
+            }
+            state == "Snow" && weather == "13n" -> {
+                R.drawable.snow_night
+            }
+            state == "Atmosphere" && weather == "50d" || weather == "50n" -> {
+                R.drawable.atmosphere
+            }
+            state == "Clear" && weather == "01d" -> {
+                R.drawable.clear_day
+            }
+            state == "Clear" && weather == "01n" -> {
+                R.drawable.clear_night
+            }
+            state == "Clouds" && weather == "02d" || weather == "03d" || weather == "04d" -> {
+                R.drawable.clouds_day
+            }
+            state == "Clouds" && weather == "02n" || weather == "03n" || weather == "04n" -> {
+                R.drawable.clouds_night
+            }
+            else -> {
+                null
+            }
         }
 
         if (background != null) {

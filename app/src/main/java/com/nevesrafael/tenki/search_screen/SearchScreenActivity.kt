@@ -58,8 +58,10 @@ class SearchScreenActivity : AppCompatActivity() {
     private fun configureRecyclerViewSavedLocation() {
         saveAdapter = SavedLocationAdapter(savedCityClick = { city ->
             val intentToReturn = Intent()
-            intentToReturn.putExtra(HomeScreenActivity.EXTRA_CITY_LAT, city.lat)
-            intentToReturn.putExtra(HomeScreenActivity.EXTRA_CITY_LON, city.lon)
+            intentToReturn.putExtra(HomeScreenActivity.EXTRA_CITY_NAME, city.cityName)
+            intentToReturn.putExtra(HomeScreenActivity.EXTRA_CITY_COUNTRY, city.country)
+            intentToReturn.putExtra(HomeScreenActivity.EXTRA_CITY_STATE, city.state)
+
             setResult(Activity.RESULT_OK, intentToReturn)
             finish()
         })
