@@ -42,8 +42,6 @@ class HomeScreenPresenter(val screen: HomeScreenActivity) {
             selectedCity.country = sharedPreference.getString(KEY_COUNTRY, null) ?: "BR"
             selectedCity.state = sharedPreference.getString(KEY_STATE, null) ?: "São Paulo"
             selectedCity.cityName = sharedPreference.getString(KEY_NAME, null) ?: "Sorocaba"
-
-
         }
 
         screen.lifecycleScope.launch {
@@ -65,8 +63,6 @@ class HomeScreenPresenter(val screen: HomeScreenActivity) {
 
             screen.hideLoading()
 
-
-
             screen.showOnScreen(weatherToday, weatherForecast)
             changeBackgroundImage(weatherToday.weather.firstOrNull()?.main, weatherToday.weather.first().icon)
             fillSelectedCity(weatherToday.name, weatherToday.id)
@@ -78,7 +74,6 @@ class HomeScreenPresenter(val screen: HomeScreenActivity) {
     fun fillSelectedCity(cityName: String, cityId: Long) {
         selectedCity.cityName = cityName
         selectedCity.id = cityId
-
     }
 
     fun changeBackgroundImage(state: String?, weather: String) {
@@ -86,43 +81,19 @@ class HomeScreenPresenter(val screen: HomeScreenActivity) {
             return
         }
 
-        val background = when {
-            state == "Thunderstorm" && weather == "11d" -> {
-                R.drawable.thunderstrorm_day
-            }
-            state == "Thunderstorm" && weather == "11n" -> {
-                R.drawable.thunderstrorm_night
-            }
-            state == "Drizzle" || state == "Rain" && weather == "09d" || weather == "10d" -> {
-                R.drawable.drizzle_rain_day
-            }
-            state == "Drizzle" || state == "Rain" && weather == "09n" || weather == "10n" -> {
-                R.drawable.drizzle_rain_night
-            }
-            state == "Snow" && weather == "13d" -> {
-                R.drawable.snow_day
-            }
-            state == "Snow" && weather == "13n" -> {
-                R.drawable.snow_night
-            }
-            state == "Atmosphere" && weather == "50d" || weather == "50n" -> {
-                R.drawable.atmosphere
-            }
-            state == "Clear" && weather == "01d" -> {
-                R.drawable.clear_day
-            }
-            state == "Clear" && weather == "01n" -> {
-                R.drawable.clear_night
-            }
-            state == "Clouds" && weather == "02d" || weather == "03d" || weather == "04d" -> {
-                R.drawable.clouds_day
-            }
-            state == "Clouds" && weather == "02n" || weather == "03n" || weather == "04n" -> {
-                R.drawable.clouds_night
-            }
-            else -> {
-                null
-            }
+        val background = when (weather) {
+            "11d" -> R.drawable.thunderstrorm_day
+            "11n" -> R.drawable.thunderstrorm_night
+            "09d", "10d" -> R.drawable.drizzle_rain_day
+            "09n", "10n" -> R.drawable.drizzle_rain_night
+            "13d" -> R.drawable.snow_day
+            "13n" -> R.drawable.snow_night
+            "50d", "50n" -> R.drawable.atmosphere
+            "01d" -> R.drawable.clear_day
+            "01n" -> R.drawable.clear_night
+            "02d", "03d", "04d" -> R.drawable.clouds_day
+            "02n", "03n", "04n" -> R.drawable.clouds_night
+            else -> null
         }
 
         if (background != null) {
@@ -152,7 +123,6 @@ class HomeScreenPresenter(val screen: HomeScreenActivity) {
 
         checkFavorite()
     }
-
 
     //para salvar a ultima cidade pesquisada
     fun saveCityInMemory() {
