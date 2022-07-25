@@ -15,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class HomeScreenPresenter(val screen: HomeScreenActivity) {
 
     private val weatherDao = AppDatabase.request(screen).weatherDao()
-    private var selectedCity = WeatherData(0, "", "", 0.0, 0.0, "")
+    private var selectedCity = WeatherData(0, "", "", "")
 
     companion object {
         const val SHARED_PREFERENCES_NAME = "db.tenki"
@@ -125,7 +125,7 @@ class HomeScreenPresenter(val screen: HomeScreenActivity) {
     }
 
     //para salvar a ultima cidade pesquisada
-    fun saveCityInMemory() {
+    private fun saveCityInMemory() {
         val sharedPreference = screen.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
         val editor = sharedPreference.edit()
         editor.putString(KEY_NAME, selectedCity.cityName)
