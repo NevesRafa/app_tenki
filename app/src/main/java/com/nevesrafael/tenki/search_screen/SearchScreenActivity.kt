@@ -37,7 +37,7 @@ class SearchScreenActivity : AppCompatActivity() {
     }
 
 
-    fun clickToSearch() {
+    private fun clickToSearch() {
         binding.searchInputText.setEndIconOnClickListener {
             val search = binding.search.text.toString()
             presenter.loadSearchCity(search)
@@ -78,7 +78,7 @@ class SearchScreenActivity : AppCompatActivity() {
         )
     }
 
-    fun configureRecyclerViewSearchLocation() {
+    private fun configureRecyclerViewSearchLocation() {
         searchAdapter = SearchLocationAdapter(clickOnTheCity = { city ->
             val intentToReturn = Intent()
             intentToReturn.putExtra(HomeScreenActivity.EXTRA_CITY_NAME, city.name)

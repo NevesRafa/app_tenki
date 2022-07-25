@@ -10,7 +10,7 @@ import com.nevesrafael.tenki.model.WeatherData
 class SavedLocationAdapter(private val savedCityClick: (WeatherData) -> Unit) :
     RecyclerView.Adapter<SavedLocationViewHolder>() {
 
-    val citySaves = mutableListOf<WeatherData>()
+    private val citySaves = mutableListOf<WeatherData>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SavedLocationViewHolder {
         val inflater = LayoutInflater.from(parent.context)

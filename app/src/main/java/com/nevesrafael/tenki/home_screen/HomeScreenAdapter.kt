@@ -13,7 +13,7 @@ import com.nevesrafael.tenki.model.WeatherDataApiResponse
 
 class HomeScreenAdapter : RecyclerView.Adapter<HomeScreenViewHolder>() {
 
-    val weatherForecast = mutableListOf<WeatherDataApiResponse>()
+    private val weatherForecast = mutableListOf<WeatherDataApiResponse>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeScreenViewHolder {
         val inflater = LayoutInflater.from(parent.context)

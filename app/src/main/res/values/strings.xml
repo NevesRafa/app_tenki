@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Tenki</string>
     <string name="temperature">%dº</string>
+    <string name="search">Search</string>
+    <string name="search_result">Search result</string>
+    <string name="saved_locations">Saved locations</string>
 </resources>

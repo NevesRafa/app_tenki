@@ -3,7 +3,6 @@ package com.nevesrafael.tenki.formater
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 object DateFormatter {
 
     fun dateFormatter(unixSeconds: Long): String {
@@ -12,7 +11,6 @@ object DateFormatter {
         val sdf = SimpleDateFormat("EEEE")
 
         return sdf.format(date)
-
 
     }
 }

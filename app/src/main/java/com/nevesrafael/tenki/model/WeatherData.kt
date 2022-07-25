@@ -9,7 +9,5 @@ data class WeatherData(
     var id: Long = 0L,
     var state: String,
     var cityName: String,
-    var lat: Double,
-    var lon: Double,
     var country: String
 )

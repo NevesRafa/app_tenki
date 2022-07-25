@@ -13,7 +13,7 @@ class SearchScreenPresenter(val screen: SearchScreenActivity) {
 
     private val weatherDao = AppDatabase.request(screen).weatherDao()
 
-    val cityApi = Retrofit.Builder()
+    private val cityApi = Retrofit.Builder()
         .baseUrl("https://api.openweathermap.org/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()

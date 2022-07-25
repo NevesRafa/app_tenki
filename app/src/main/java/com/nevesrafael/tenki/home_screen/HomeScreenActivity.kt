@@ -132,7 +132,6 @@ class HomeScreenActivity : AppCompatActivity() {
 
             presenter.loadTemperatureData(name, country, state)
 
-
         }
 
     }

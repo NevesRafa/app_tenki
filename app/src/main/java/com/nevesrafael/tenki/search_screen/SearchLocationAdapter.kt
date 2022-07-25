@@ -10,7 +10,7 @@ import com.nevesrafael.tenki.model.CityApiResponse
 class SearchLocationAdapter(private val clickOnTheCity: (CityApiResponse) -> Unit) :
     RecyclerView.Adapter<SearchLocationViewHolder>() {
 
-    val citySearch = mutableListOf<CityApiResponse>()
+    private val citySearch = mutableListOf<CityApiResponse>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchLocationViewHolder {
         val inflater = LayoutInflater.from(parent.context)
