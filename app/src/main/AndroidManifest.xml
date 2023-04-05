@@ -15,10 +15,10 @@
         android:theme="@style/Theme.Tenki"
         tools:targetApi="31">
         <activity
-            android:name=".search_screen.SearchScreenActivity"
+            android:name=".presentation.search.SearchActivity"
             android:exported="false" />
         <activity
-            android:name=".home_screen.HomeScreenActivity"
+            android:name=".presentation.home.HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

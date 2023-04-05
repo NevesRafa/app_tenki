@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#3490dc"
-    tools:context=".home_screen.HomeScreenActivity">
+    tools:context=".presentation.home.HomeActivity">
 
     <ImageView
         android:id="@+id/image"

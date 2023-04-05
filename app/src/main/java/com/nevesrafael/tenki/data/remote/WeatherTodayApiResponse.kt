@@ -1,4 +1,4 @@
-package com.nevesrafael.tenki.model
+package com.nevesrafael.tenki.data.remote
 
 data class WeatherTodayApiResponse(
     val main: WeatherTemperatureApiResponse,

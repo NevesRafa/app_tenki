@@ -1,10 +1,10 @@
-package com.nevesrafael.tenki.model
+package com.nevesrafael.tenki.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class WeatherData(
+data class WeatherDetails(
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0L,
     var state: String,

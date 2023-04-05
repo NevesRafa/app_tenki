@@ -1,14 +1,14 @@
-package com.nevesrafael.tenki.database
+package com.nevesrafael.tenki.data.local
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.nevesrafael.tenki.model.WeatherData
+import com.nevesrafael.tenki.data.model.WeatherDetails
 
 
 @Database(
-    entities = [WeatherData::class],
+    entities = [WeatherDetails::class],
     version = 1,
     exportSchema = true
 )

@@ -1,6 +1,5 @@
-package com.nevesrafael.tenki.search_screen
+package com.nevesrafael.tenki.presentation.search
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -9,12 +8,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.nevesrafael.tenki.data.model.WeatherDetails
+import com.nevesrafael.tenki.data.remote.CityApiResponse
 import com.nevesrafael.tenki.databinding.ActivitySearchScreenBinding
-import com.nevesrafael.tenki.home_screen.HomeScreenActivity
-import com.nevesrafael.tenki.model.CityApiResponse
-import com.nevesrafael.tenki.model.WeatherData
+import com.nevesrafael.tenki.presentation.home.HomeActivity
 
-class SearchScreenActivity : AppCompatActivity() {
+class SearchActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchScreenBinding
     private lateinit var presenter: SearchScreenPresenter
@@ -61,11 +60,11 @@ class SearchScreenActivity : AppCompatActivity() {
     private fun configureRecyclerViewSavedLocation() {
         saveAdapter = SavedLocationAdapter(savedCityClick = { city ->
             val intentToReturn = Intent()
-            intentToReturn.putExtra(HomeScreenActivity.EXTRA_CITY_NAME, city.cityName)
-            intentToReturn.putExtra(HomeScreenActivity.EXTRA_CITY_COUNTRY, city.country)
-            intentToReturn.putExtra(HomeScreenActivity.EXTRA_CITY_STATE, city.state)
+            intentToReturn.putExtra(HomeActivity.EXTRA_CITY_NAME, city.cityName)
+            intentToReturn.putExtra(HomeActivity.EXTRA_CITY_COUNTRY, city.country)
+            intentToReturn.putExtra(HomeActivity.EXTRA_CITY_STATE, city.state)
 
-            setResult(Activity.RESULT_OK, intentToReturn)
+            setResult(RESULT_OK, intentToReturn)
             finish()
         })
         binding.recyclerviewSaveLocation.layoutManager = LinearLayoutManager(this)
@@ -81,10 +80,10 @@ class SearchScreenActivity : AppCompatActivity() {
     private fun configureRecyclerViewSearchLocation() {
         searchAdapter = SearchLocationAdapter(clickOnTheCity = { city ->
             val intentToReturn = Intent()
-            intentToReturn.putExtra(HomeScreenActivity.EXTRA_CITY_NAME, city.name)
-            intentToReturn.putExtra(HomeScreenActivity.EXTRA_CITY_COUNTRY, city.country)
-            intentToReturn.putExtra(HomeScreenActivity.EXTRA_CITY_STATE, city.state)
-            setResult(Activity.RESULT_OK, intentToReturn)
+            intentToReturn.putExtra(HomeActivity.EXTRA_CITY_NAME, city.name)
+            intentToReturn.putExtra(HomeActivity.EXTRA_CITY_COUNTRY, city.country)
+            intentToReturn.putExtra(HomeActivity.EXTRA_CITY_STATE, city.state)
+            setResult(RESULT_OK, intentToReturn)
             finish()
         })
         binding.recyclerviewSearchResult.layoutManager = LinearLayoutManager(this)
@@ -102,7 +101,7 @@ class SearchScreenActivity : AppCompatActivity() {
         Toast.makeText(this, "Please fill in the search field!", Toast.LENGTH_SHORT).show()
     }
 
-    fun showListSavedCities(listOfCities: List<WeatherData>) {
+    fun showListSavedCities(listOfCities: List<WeatherDetails>) {
         saveAdapter.update(listOfCities)
     }
 }

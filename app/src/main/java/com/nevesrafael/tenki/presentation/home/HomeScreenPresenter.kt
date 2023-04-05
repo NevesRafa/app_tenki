@@ -1,21 +1,21 @@
-package com.nevesrafael.tenki.home_screen
+package com.nevesrafael.tenki.presentation.home
 
 import android.content.Context
 import androidx.lifecycle.lifecycleScope
 import com.nevesrafael.tenki.R
-import com.nevesrafael.tenki.database.AppDatabase
-import com.nevesrafael.tenki.model.WeatherApi
-import com.nevesrafael.tenki.model.WeatherData
+import com.nevesrafael.tenki.data.local.AppDatabase
+import com.nevesrafael.tenki.data.model.WeatherDetails
+import com.nevesrafael.tenki.data.remote.WeatherApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class HomeScreenPresenter(val screen: HomeScreenActivity) {
+class HomeScreenPresenter(val screen: HomeActivity) {
 
     private val weatherDao = AppDatabase.request(screen).weatherDao()
-    private var selectedCity = WeatherData(0, "", "", "")
+    private var selectedCity = WeatherDetails(0, "", "", "")
 
     companion object {
         const val SHARED_PREFERENCES_NAME = "db.tenki"
@@ -101,28 +101,6 @@ class HomeScreenPresenter(val screen: HomeScreenActivity) {
         }
     }
 
-    fun checkFavorite() {
-        val city = weatherDao.searchById(selectedCity.id)
-
-        if (city != null) {
-            screen.showStar()
-
-        } else {
-            screen.hideStar()
-        }
-    }
-
-    fun favoriteCity() {
-        val city = weatherDao.searchById(selectedCity.id)
-
-        if (city != null) {
-            weatherDao.remove(selectedCity.id)
-        } else {
-            weatherDao.save(selectedCity)
-        }
-
-        checkFavorite()
-    }
 
     //para salvar a ultima cidade pesquisada
     private fun saveCityInMemory() {

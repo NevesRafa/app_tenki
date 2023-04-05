@@ -1,11 +1,11 @@
-package com.nevesrafael.tenki.search_screen
+package com.nevesrafael.tenki.presentation.search
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.nevesrafael.tenki.data.remote.CityApiResponse
 import com.nevesrafael.tenki.databinding.ItemSearchLocationBinding
-import com.nevesrafael.tenki.model.CityApiResponse
 
 class SearchLocationAdapter(private val clickOnTheCity: (CityApiResponse) -> Unit) :
     RecyclerView.Adapter<SearchLocationViewHolder>() {

@@ -1,4 +1,4 @@
-package com.nevesrafael.tenki.model
+package com.nevesrafael.tenki.data.remote
 
 import retrofit2.http.GET
 import retrofit2.http.Query

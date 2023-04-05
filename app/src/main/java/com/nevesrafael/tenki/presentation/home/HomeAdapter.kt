@@ -1,4 +1,4 @@
-package com.nevesrafael.tenki.home_screen
+package com.nevesrafael.tenki.presentation.home
 
 
 import android.view.LayoutInflater
@@ -7,9 +7,9 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.nevesrafael.tenki.R
 import com.nevesrafael.tenki.TemperatureFormatter
+import com.nevesrafael.tenki.data.remote.WeatherDataApiResponse
 import com.nevesrafael.tenki.databinding.ItemWeekdayInformationBinding
-import com.nevesrafael.tenki.formater.DateFormatter
-import com.nevesrafael.tenki.model.WeatherDataApiResponse
+import com.nevesrafael.tenki.internal.formater.DateFormatter
 
 class HomeScreenAdapter : RecyclerView.Adapter<HomeScreenViewHolder>() {
 

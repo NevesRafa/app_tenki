@@ -1,4 +1,4 @@
-package com.nevesrafael.tenki.formater
+package com.nevesrafael.tenki.internal.formater
 
 import java.text.SimpleDateFormat
 import java.util.*

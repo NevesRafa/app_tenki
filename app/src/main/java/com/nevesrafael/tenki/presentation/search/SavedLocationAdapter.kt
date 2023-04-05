@@ -1,16 +1,16 @@
-package com.nevesrafael.tenki.search_screen
+package com.nevesrafael.tenki.presentation.search
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.nevesrafael.tenki.data.model.WeatherDetails
 import com.nevesrafael.tenki.databinding.ItemSavedLocationBinding
-import com.nevesrafael.tenki.model.WeatherData
 
-class SavedLocationAdapter(private val savedCityClick: (WeatherData) -> Unit) :
+class SavedLocationAdapter(private val savedCityClick: (WeatherDetails) -> Unit) :
     RecyclerView.Adapter<SavedLocationViewHolder>() {
 
-    private val citySaves = mutableListOf<WeatherData>()
+    private val citySaves = mutableListOf<WeatherDetails>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SavedLocationViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -25,7 +25,7 @@ class SavedLocationAdapter(private val savedCityClick: (WeatherData) -> Unit) :
 
     override fun getItemCount() = citySaves.size
 
-    fun update(city: List<WeatherData>) {
+    fun update(city: List<WeatherDetails>) {
         this.citySaves.clear()
         this.citySaves.addAll(city)
         notifyDataSetChanged()
@@ -35,7 +35,7 @@ class SavedLocationAdapter(private val savedCityClick: (WeatherData) -> Unit) :
 class SavedLocationViewHolder(val binding: ItemSavedLocationBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(city: WeatherData, savedCityClick: (WeatherData) -> Unit) {
+    fun bind(city: WeatherDetails, savedCityClick: (WeatherDetails) -> Unit) {
 
         binding.cityName.text = city.cityName
         binding.state.text = city.state

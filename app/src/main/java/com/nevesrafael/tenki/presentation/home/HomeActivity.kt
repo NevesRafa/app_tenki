@@ -1,4 +1,4 @@
-package com.nevesrafael.tenki.home_screen
+package com.nevesrafael.tenki.presentation.home
 
 import android.app.Activity
 import android.content.Intent
@@ -8,31 +8,24 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.nevesrafael.tenki.R
 import com.nevesrafael.tenki.TemperatureFormatter
+import com.nevesrafael.tenki.data.remote.WeatherDataApiResponse
+import com.nevesrafael.tenki.data.remote.WeatherTodayApiResponse
 import com.nevesrafael.tenki.databinding.ActivityHomeScreenBinding
-import com.nevesrafael.tenki.model.WeatherDataApiResponse
-import com.nevesrafael.tenki.model.WeatherTodayApiResponse
-import com.nevesrafael.tenki.search_screen.SearchScreenActivity
+import com.nevesrafael.tenki.presentation.search.SearchActivity
+import org.koin.android.ext.android.inject
 import java.util.*
 
-class HomeScreenActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
+
+    private val viewModel: HomeViewModel by inject()
 
     private lateinit var binding: ActivityHomeScreenBinding
-    private lateinit var presenter: HomeScreenPresenter
     private lateinit var weatherAdapter: HomeScreenAdapter
-
-
-    companion object {
-        const val EXTRA_CITY_COUNTRY = "extra.city.country"
-        const val EXTRA_CITY_STATE = "extra.city.state"
-        const val EXTRA_CITY_NAME = "extra.city.name"
-        const val REQUEST_CODE_SEARCH = 123
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        presenter = HomeScreenPresenter(this)
 
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
         actionBar?.hide()
@@ -41,6 +34,7 @@ class HomeScreenActivity : AppCompatActivity() {
         configureRecyclerViewWeather()
         configureStarButton()
         presenter.loadTemperatureData("", "", "")
+
     }
 
     private fun configureRecyclerViewWeather() {
@@ -93,7 +87,7 @@ class HomeScreenActivity : AppCompatActivity() {
     private fun configureSearchButton() {
 
         binding.search.setOnClickListener {
-            val intent = Intent(this, SearchScreenActivity::class.java)
+            val intent = Intent(this, SearchActivity::class.java)
             startActivityForResult(intent, REQUEST_CODE_SEARCH)
         }
     }
@@ -134,5 +128,12 @@ class HomeScreenActivity : AppCompatActivity() {
 
         }
 
+    }
+
+    companion object {
+        const val EXTRA_CITY_COUNTRY = "extra.city.country"
+        const val EXTRA_CITY_STATE = "extra.city.state"
+        const val EXTRA_CITY_NAME = "extra.city.name"
+        const val REQUEST_CODE_SEARCH = 123
     }
 }

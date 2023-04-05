@@ -1,15 +1,15 @@
-package com.nevesrafael.tenki.search_screen
+package com.nevesrafael.tenki.presentation.search
 
 import androidx.lifecycle.lifecycleScope
-import com.nevesrafael.tenki.database.AppDatabase
-import com.nevesrafael.tenki.model.CityApi
+import com.nevesrafael.tenki.data.local.AppDatabase
+import com.nevesrafael.tenki.data.remote.CityApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class SearchScreenPresenter(val screen: SearchScreenActivity) {
+class SearchScreenPresenter(val screen: SearchActivity) {
 
     private val weatherDao = AppDatabase.request(screen).weatherDao()
 
