@@ -3,6 +3,7 @@ package com.nevesrafael.tenki.presentation.home
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
@@ -14,11 +15,10 @@ import com.nevesrafael.tenki.internal.Ext.gone
 import com.nevesrafael.tenki.internal.Ext.setErrorStyle
 import com.nevesrafael.tenki.internal.Ext.visible
 import com.nevesrafael.tenki.presentation.search.SearchActivity
-import org.koin.android.ext.android.inject
 
 class HomeActivity : AppCompatActivity() {
 
-    private val viewModel: HomeViewModel by inject()
+    private val viewModel: HomeViewModel by viewModels()
 
     private lateinit var binding: ActivityHomeScreenBinding
     private lateinit var weatherAdapter: HomeScreenAdapter
@@ -36,6 +36,7 @@ class HomeActivity : AppCompatActivity() {
         configureSearchButton()
         configureStarButton()
 
+        viewModel.weatherToday()
     }
 
     private fun setupViewModel() {
@@ -60,13 +61,15 @@ class HomeActivity : AppCompatActivity() {
         city: CityDetails,
         weatherDetails: WeatherDetails
     ) {
+        hideLoading()
 
         binding.cityName.text = city.cityName
-
 
         binding.temperature.text = getString(R.string.temperature, weatherDetails.temp)
 
         binding.climate.text = weatherDetails.description
+
+        weatherDetails.background?.let { binding.image.setBackgroundResource(it) }
 
         weatherAdapter.update(weatherDetails.weatherForecast)
     }

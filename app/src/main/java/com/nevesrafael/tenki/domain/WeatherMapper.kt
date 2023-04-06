@@ -14,7 +14,7 @@ object WeatherMapper {
         weatherForecast: WeatherApiResponse
     ): WeatherDetails {
 
-        val weather = weatherToday.weather.firstOrNull()?.main
+        val weatherIcon = weatherToday.weather.first().icon
 
         val temp = TemperatureFormatter.kelvinToCelsius(weatherToday.main.temp)
 
@@ -27,18 +27,18 @@ object WeatherMapper {
         }
 
         return WeatherDetails(
-            weather = weather,
             temp = temp,
             description = description,
             weatherId = weatherId,
-            background = changeBackgroundImage(weather),
-            weatherForecast = weatherForecast.list
+            background = changeBackgroundImage(weatherIcon),
+            weatherForecast = weatherForecast.list,
+            weatherIcon = weatherIcon
         )
     }
 
-    private fun changeBackgroundImage(weather: String?): Int? {
+    private fun changeBackgroundImage(weatherIcon: String?): Int? {
 
-        val background = when (weather) {
+        val background = when (weatherIcon) {
             "11d" -> R.drawable.thunderstrorm_day
             "11n" -> R.drawable.thunderstrorm_night
             "09d", "10d" -> R.drawable.drizzle_rain_day

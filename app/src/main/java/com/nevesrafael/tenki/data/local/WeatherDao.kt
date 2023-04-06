@@ -9,13 +9,13 @@ import com.nevesrafael.tenki.data.model.CityDetails
 @Dao
 interface WeatherDao {
 
-    @Query("SELECT * FROM WeatherData")
+    @Query("SELECT * FROM CityDetails")
     fun searchAll(): List<CityDetails>
 
-    @Query("SELECT * FROM WeatherData WHERE id = :id")
+    @Query("SELECT * FROM CityDetails WHERE id = :id")
     fun searchById(id: Long): CityDetails?
 
-    @Query("DELETE FROM WeatherData WHERE id = :id")
+    @Query("DELETE FROM CityDetails WHERE id = :id")
     fun remove(id: Long)
 
     @Update

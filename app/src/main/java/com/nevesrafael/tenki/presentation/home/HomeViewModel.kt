@@ -1,16 +1,20 @@
 package com.nevesrafael.tenki.presentation.home
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nevesrafael.tenki.data.local.AppDatabase
 import com.nevesrafael.tenki.data.model.CityDetails
 import com.nevesrafael.tenki.domain.TenkiRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class HomeViewModel(private val repository: TenkiRepository) : ViewModel() {
+class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
+    private val weatherDao = AppDatabase.request(application.applicationContext).weatherDao()
+    private val repository = TenkiRepository(weatherDao)
     val tenkiLiveData = MutableLiveData<HomeState>()
     var city: CityDetails = CityDetails(
         id = 0,

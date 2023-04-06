@@ -9,7 +9,7 @@ interface WeatherApi {
     suspend fun getWeatherForecast(
         @Query("q") name: String,
         @Query("lang") language: String = "pt_br",
-        @Query("appid") key: String = "87c2ecbeb52654589432513009c0bd19"
+        @Query("appid") key: String = "a164dd5e11d56abc5b28c37155fc0e4e"
     ): WeatherApiResponse
 
 
@@ -17,7 +17,7 @@ interface WeatherApi {
     suspend fun getWeatherToday(
         @Query("q") name: String,
         @Query("lang") language: String = "pt_br",
-        @Query("appid") key: String = "87c2ecbeb52654589432513009c0bd19"
+        @Query("appid") key: String = "a164dd5e11d56abc5b28c37155fc0e4e"
     ): WeatherTodayApiResponse
 
 }
