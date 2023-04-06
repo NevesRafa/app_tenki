@@ -4,11 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.nevesrafael.tenki.data.model.WeatherDetails
+import com.nevesrafael.tenki.data.model.CityDetails
 
 
 @Database(
-    entities = [WeatherDetails::class],
+    entities = [CityDetails::class],
     version = 1,
     exportSchema = true
 )

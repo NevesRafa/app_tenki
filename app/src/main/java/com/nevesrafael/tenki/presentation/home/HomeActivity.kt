@@ -1,19 +1,20 @@
 package com.nevesrafael.tenki.presentation.home
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.google.android.material.snackbar.Snackbar
 import com.nevesrafael.tenki.R
-import com.nevesrafael.tenki.TemperatureFormatter
-import com.nevesrafael.tenki.data.remote.WeatherDataApiResponse
-import com.nevesrafael.tenki.data.remote.WeatherTodayApiResponse
+import com.nevesrafael.tenki.data.model.CityDetails
+import com.nevesrafael.tenki.data.model.WeatherDetails
 import com.nevesrafael.tenki.databinding.ActivityHomeScreenBinding
+import com.nevesrafael.tenki.internal.Ext.gone
+import com.nevesrafael.tenki.internal.Ext.setErrorStyle
+import com.nevesrafael.tenki.internal.Ext.visible
 import com.nevesrafael.tenki.presentation.search.SearchActivity
 import org.koin.android.ext.android.inject
-import java.util.*
 
 class HomeActivity : AppCompatActivity() {
 
@@ -30,58 +31,79 @@ class HomeActivity : AppCompatActivity() {
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
         actionBar?.hide()
 
+        setupViewModel()
+        setupRecyclerView()
         configureSearchButton()
-        configureRecyclerViewWeather()
         configureStarButton()
-        presenter.loadTemperatureData("", "", "")
 
     }
 
-    private fun configureRecyclerViewWeather() {
+    private fun setupViewModel() {
+        viewModel.tenkiLiveData.observe(this) { state ->
+            when (state) {
+                is HomeState.Loading -> showLoading()
+                is HomeState.Success -> showOnScreen(state.city, state.weatherDetails)
+                is HomeState.IsFavorite -> showStar()
+                is HomeState.NotFavorite -> hideStar()
+                is HomeState.Error -> showError(state.errorMessage)
+            }
+        }
+    }
+
+    private fun setupRecyclerView() {
+        hideLoading()
         weatherAdapter = HomeScreenAdapter()
         binding.recyclerviewWeatherForecast.adapter = weatherAdapter
     }
 
     fun showOnScreen(
-        weatherToday: WeatherTodayApiResponse,
-        weatherForecast: List<WeatherDataApiResponse>
+        city: CityDetails,
+        weatherDetails: WeatherDetails
     ) {
 
-        binding.cityName.text = weatherToday.name
+        binding.cityName.text = city.cityName
 
-        val temp = TemperatureFormatter.kelvinToCelsius(weatherToday.main.temp)
-        binding.temperature.text = getString(R.string.temperature, temp)
 
-        binding.climate.text = weatherToday.weather.first().description.replaceFirstChar {
-            if (it.isLowerCase()) it.titlecase(
-                Locale.ROOT
-            ) else it.toString()
-        }
-        weatherAdapter.update(weatherForecast)
+        binding.temperature.text = getString(R.string.temperature, weatherDetails.temp)
+
+        binding.climate.text = weatherDetails.description
+
+        weatherAdapter.update(weatherDetails.weatherForecast)
+    }
+
+    private fun showError(errorMessage: String?) {
+        hideLoading()
+        Snackbar.make(
+            binding.root,
+            getString(R.string.error_message, errorMessage),
+            Snackbar.LENGTH_LONG
+        )
+            .setErrorStyle()
+            .show()
     }
 
     fun showLoading() {
-        binding.loading.visibility = View.VISIBLE
-        binding.image.visibility = View.GONE
-        binding.star.visibility = View.GONE
-        binding.search.visibility = View.GONE
-        binding.recyclerviewWeatherForecast.visibility = View.GONE
-        binding.shapeWeatherForecast.visibility = View.GONE
-        binding.cityName.visibility = View.GONE
-        binding.climate.visibility = View.GONE
-        binding.temperature.visibility = View.GONE
+        binding.loading.visible()
+        binding.image.gone()
+        binding.star.gone()
+        binding.search.gone()
+        binding.recyclerviewWeatherForecast.gone()
+        binding.shapeWeatherForecast.gone()
+        binding.cityName.gone()
+        binding.climate.gone()
+        binding.temperature.gone()
     }
 
     fun hideLoading() {
-        binding.loading.visibility = View.GONE
-        binding.image.visibility = View.VISIBLE
-        binding.star.visibility = View.VISIBLE
-        binding.search.visibility = View.VISIBLE
-        binding.recyclerviewWeatherForecast.visibility = View.VISIBLE
-        binding.shapeWeatherForecast.visibility = View.VISIBLE
-        binding.cityName.visibility = View.VISIBLE
-        binding.climate.visibility = View.VISIBLE
-        binding.temperature.visibility = View.VISIBLE
+        binding.loading.gone()
+        binding.image.visible()
+        binding.star.visible()
+        binding.search.visible()
+        binding.recyclerviewWeatherForecast.visible()
+        binding.shapeWeatherForecast.visible()
+        binding.cityName.visible()
+        binding.climate.visible()
+        binding.temperature.visible()
     }
 
     private fun configureSearchButton() {
@@ -94,41 +116,35 @@ class HomeActivity : AppCompatActivity() {
 
     private fun configureStarButton() {
         binding.star.setOnClickListener {
-            presenter.favoriteCity()
+            viewModel.clickStar()
         }
     }
 
-
-    fun changeBackground(background: Int) {
-        val backgroundDrawable = ContextCompat.getDrawable(this, background)
-        binding.image.setImageDrawable(backgroundDrawable)
-    }
-
-    fun showStar() {
+    private fun showStar() {
         val starSelected = ContextCompat.getDrawable(this, R.drawable.ic_star_selected)
 
         binding.star.setImageDrawable(starSelected)
     }
 
-    fun hideStar() {
+    private fun hideStar() {
         val starUnselected = ContextCompat.getDrawable(this, R.drawable.ic_star_unselected)
 
         binding.star.setImageDrawable(starUnselected)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == REQUEST_CODE_SEARCH && resultCode == Activity.RESULT_OK) {
-            val country = data?.getStringExtra(EXTRA_CITY_COUNTRY) ?: ""
-            val state = data?.getStringExtra(EXTRA_CITY_STATE) ?: ""
-            val name = data?.getStringExtra(EXTRA_CITY_NAME) ?: ""
-
-            presenter.loadTemperatureData(name, country, state)
-
-        }
-
-    }
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//
+//        if (requestCode == REQUEST_CODE_SEARCH && resultCode == Activity.RESULT_OK) {
+//            val country = data?.getStringExtra(EXTRA_CITY_COUNTRY) ?: ""
+//            val state = data?.getStringExtra(EXTRA_CITY_STATE) ?: ""
+//            val name = data?.getStringExtra(EXTRA_CITY_NAME) ?: ""
+//
+//            presenter.loadTemperatureData(name, country, state)
+//
+//        }
+//
+//    }
 
     companion object {
         const val EXTRA_CITY_COUNTRY = "extra.city.country"

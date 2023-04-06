@@ -1,13 +1,12 @@
 package com.nevesrafael.tenki.data.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import com.nevesrafael.tenki.data.remote.WeatherDataApiResponse
 
-@Entity
 data class WeatherDetails(
-    @PrimaryKey(autoGenerate = true)
-    var id: Long = 0L,
-    var state: String,
-    var cityName: String,
-    var country: String
+    val weather: String?,
+    val temp: Int,
+    val description: String,
+    val weatherId: Long,
+    val background: Int?,
+    val weatherForecast: List<WeatherDataApiResponse>
 )

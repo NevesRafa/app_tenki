@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.nevesrafael.tenki.data.model.WeatherDetails
+import com.nevesrafael.tenki.data.model.CityDetails
 import com.nevesrafael.tenki.data.remote.CityApiResponse
 import com.nevesrafael.tenki.databinding.ActivitySearchScreenBinding
 import com.nevesrafael.tenki.presentation.home.HomeActivity
@@ -101,7 +101,7 @@ class SearchActivity : AppCompatActivity() {
         Toast.makeText(this, "Please fill in the search field!", Toast.LENGTH_SHORT).show()
     }
 
-    fun showListSavedCities(listOfCities: List<WeatherDetails>) {
+    fun showListSavedCities(listOfCities: List<CityDetails>) {
         saveAdapter.update(listOfCities)
     }
 }

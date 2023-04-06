@@ -3,15 +3,23 @@ package com.nevesrafael.tenki.presentation.home
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nevesrafael.tenki.data.model.WeatherDetails
+import com.nevesrafael.tenki.data.model.CityDetails
 import com.nevesrafael.tenki.domain.TenkiRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class HomeViewModel(val repository: TenkiRepository) : ViewModel() {
+class HomeViewModel(private val repository: TenkiRepository) : ViewModel() {
 
     val tenkiLiveData = MutableLiveData<HomeState>()
+    var city: CityDetails = CityDetails(
+        id = 0,
+        state = "São Paulo",
+        cityName = "Sorocaba",
+        country = "BR"
+    )
 
-    fun starCondition(id: Long) {
+    private fun starCondition(id: Long) {
         viewModelScope.launch {
             if (repository.cityById(id) != null) {
                 tenkiLiveData.postValue(HomeState.IsFavorite)
@@ -21,7 +29,7 @@ class HomeViewModel(val repository: TenkiRepository) : ViewModel() {
         }
     }
 
-    fun clickStar(city: WeatherDetails) {
+    fun clickStar() {
         viewModelScope.launch {
             if (repository.cityById(city.id) != null) {
                 repository.removeCityById(city.id)
@@ -29,6 +37,23 @@ class HomeViewModel(val repository: TenkiRepository) : ViewModel() {
                 repository.saveCity(city)
             }
             starCondition(city.id)
+        }
+    }
+
+    fun weatherToday() {
+        viewModelScope.launch {
+
+            tenkiLiveData.postValue(HomeState.Loading)
+
+            try {
+                val weatherDetails = withContext(Dispatchers.IO) {
+                    repository.callWeatherToday(city.cityName)
+                }
+                tenkiLiveData.postValue(HomeState.Success(city, weatherDetails))
+
+            } catch (error: Exception) {
+                tenkiLiveData.postValue(HomeState.Error(error.message))
+            }
         }
     }
 }
